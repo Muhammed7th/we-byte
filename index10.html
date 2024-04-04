@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeByte</title>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f7f7;
+            background-image: linear-gradient(#fcde67);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            /* Semi-transparent white */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #ebc82c;
+            /* A shade of pink */
+        }
+
+        input[type="password"],
+        input[type="text"],
+        input[type="email"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #efde86;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #edc40c;
+            /* A darker shade of pink */
+        }
+
+        #password-strength-bar-container {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+            height: 10px;
+        }
+
+        #password-strength-bar {
+            height: 10px;
+            width: 0%;
+            border-radius: 5px;
+            transition: width 0.3s;
+        }
+
+        .show-password {
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Create Account</h2>
+        <input type="text" id="login" placeholder="Username" required>
+        <!-- Consolidated email input -->
+        <input type="email" id="email" placeholder="Email" required>
+
+        <!-- OTP verification elements, initially hidden -->
+        
+
+        <input type="password" id="create-password" placeholder="Password" oninput="updatePasswordStrength()" required>
+        <label class="show-password">
+            <input type="checkbox" onclick="togglePassword()"> Show Password
+            <ul style="color: gray;">
+                <li id="length-criteria">At least 8 characters long</li>
+                <li id="number-criteria">Include at least one number</li>
+                <li id="lowercase-criteria">Include at least one lowercase letter</li>
+                <li id="uppercase-criteria">Include at least one uppercase letter</li>
+                <li id="special-criteria">Include at least one special character (e.g., ! @ # $)</li>
+            </ul>
+        </label>
+
+        <div id="password-strength-bar-container">
+            <div id="password-strength-bar"></div>
+        </div>
+        <p id="time-to-crack">Estimated time to crack: </p>
+        <div class="otpverify" style="display: none;">
+            <input type="text" id="otp_inp" placeholder="Enter the OTP sent to your Email...">
+            <button class="btn" id="otp-btn">Verify</button>
+        </div>
+        <!-- Send OTP button -->
+        <button class="btn" type="button" onclick="sendOTP()">Send OTP</button>
+        <!-- Create Account button -->
+        <button type="button" id="create-account-btn">Create Account</button>
+    </div>
+
+   
+</body>
+
+ 
+    <script>
+        src="Test.js"; 
+        function updatePasswordStrength() {
+            console.log("updatePasswordStrength called");
+            var password = document.getElementById('create-password').value;
+            console.log("Password:", password);
+            var timeToCrack = calculateTimeToCrack(password);
+            console.log("Time to crack:", timeToCrack);
+            document.getElementById('time-to-crack').innerText = 'Estimated time to crack: ' + timeToCrack;
+
+            // Calculate strength percentage (this is a placeholder - replace with your actual logic)
+            var strengthPercentage = calculateStrengthPercentage(password);
+
+            // Update the password strength bar
+            var strengthBar = document.getElementById('password-strength-bar');
+            strengthBar.style.width = strengthPercentage + '%';
+
+            // Optionally, update the color based on the strength
+            if (strengthPercentage < 25) {
+                strengthBar.style.backgroundColor = 'red';
+            } else if (strengthPercentage < 50) {
+                strengthBar.style.backgroundColor = 'orange';
+            } else if (strengthPercentage < 75) {
+                strengthBar.style.backgroundColor = 'yellow';
+            } else {
+                strengthBar.style.backgroundColor = 'green';
+            }
+            checkPasswordCriteria(password);
+        }
+
+        function checkPasswordCriteria(password) {
+            var lengthCriteria = document.getElementById('length-criteria');
+            var numberCriteria = document.getElementById('number-criteria');
+            var lowercaseCriteria = document.getElementById('lowercase-criteria');
+            var uppercaseCriteria = document.getElementById('uppercase-criteria');
+            var specialCriteria = document.getElementById('special-criteria');
+
+            // Check the length
+            lengthCriteria.style.color = password.length >= 8 ? 'green' : 'red';
+
+            // Check for number
+            numberCriteria.style.color = /[0-9]/.test(password) ? 'green' : 'red';
+
+            // Check for lowercase
+            lowercaseCriteria.style.color = /[a-z]/.test(password) ? 'green' : 'red';
+
+            // Check for uppercase
+            uppercaseCriteria.style.color = /[A-Z]/.test(password) ? 'green' : 'red';
+
+            // Check for special character
+            specialCriteria.style.color = /[^a-zA-Z0-9]/.test(password) ? 'green' : 'red';
+        }
+
+        // Placeholder function for calculating password strength percentage
+        function calculateStrengthPercentage(password) {
+            // Implement your own logic to determine password strength
+            // Returning a value between 0 and 100 based on password criteria
+            return Math.min(password.length * 10, 100);
+        }
+
+
+
+        function togglePassword() {
+        var passwordInput = document.getElementById('create-password');
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+        function calculateTimeToCrack(password) {
+            var length = password.length;
+            var complexity = 0;
+            complexity += password.match(/[a-z]/) ? 1 : 0;
+            complexity += password.match(/[A-Z]/) ? 1 : 0;
+            complexity += password.match(/[0-9]/) ? 1 : 0;
+            complexity += password.match(/[^a-zA-Z0-9]/) ? 1 : 0;
+
+            // Calculate time to crack based on length and complexity
+            // This is a simplified estimation and should be replaced with a real calculation
+
+            if (length < 6) return 'instant';
+            if (length >= 6 && length < 8) {
+                if (complexity < 2) return 'seconds';
+                if (complexity === 2) return '5 minutes';
+                if (complexity > 2) return '2 hours';
+            }
+            if (length >= 8 && length < 10) {
+                if (complexity < 2) return 'minutes';
+                if (complexity === 2) return '2 hours';
+                if (complexity > 2) return '2 days';
+            }
+            if (length >= 10) {
+                if (complexity < 2) return '1 day';
+                if (complexity === 2) return '2 weeks';
+                if (complexity > 2) return 'centuries';
+            }
+
+            // If a password somehow falls outside of these conditions, we'll return 'unknown'
+            return 'unknown';
+            var timeToCrack = 'some time value'; // Replace with actual calculation
+            console.log("calculateTimeToCrack returning:", timeToCrack);
+            return timeToCrack;
+        }
+        function isPasswordCriteriaMet() {
+        var password = document.getElementById('create-password').value;
+        var lengthCriteriaMet = password.length >= 8;
+        var numberCriteriaMet = /[0-9]/.test(password);
+        var lowercaseCriteriaMet = /[a-z]/.test(password);
+        var uppercaseCriteriaMet = /[A-Z]/.test(password);
+        var specialCriteriaMet = /[^a-zA-Z0-9]/.test(password);
+
+        return lengthCriteriaMet && numberCriteriaMet && lowercaseCriteriaMet && uppercaseCriteriaMet && specialCriteriaMet;
+    }
+
+        
+    function sendOTP() {
+    if (!isPasswordCriteriaMet()) {
+        alert("Must complete criteria");
+        return;
+    }
+
+    const email = document.getElementById('email');
+    const otpverify = document.getElementsByClassName('otpverify')[0];
+    let otp_val = Math.floor(Math.random() * 10000);
+
+    let emailbody = `<h2>Your OTP is </h2>${otp_val}`;
+    Email.send({
+        SecureToken: "35ecbb9a-42e6-4adf-9e21-3ff6c6b0e3ab",
+        To: email.value,
+        From: "moalharbi284@gmail.com",
+        Subject: "Email OTP using JavaScript",
+        Body: emailbody,
+    }).then(message => {
+        if (message === "OK") {
+            alert("OTP sent to your email " + email.value);
+            otpverify.style.display = "flex";
+            const otp_inp = document.getElementById('otp_inp');
+            const otp_btn = document.getElementById('otp-btn');
+
+            otp_btn.addEventListener('click', () => {
+                if (otp_inp.value == otp_val) {
+                    alert("Email address verified...");
+                    // Save credentials after successful OTP verification
+                    const username = document.getElementById('login').value;
+                    const password = document.getElementById('create-password').value;
+                    saveCredentials(username, password);
+                    window.location.href = 'index_login.html'; // Redirect to the login page
+                } else {
+                    alert("Invalid OTP");
+                }
+            });
+        }
+    });
+}
+
+function saveCredentials(username, password) {
+    const user = {
+        username: username,
+        password: password // Note: In a real application, ensure to hash the password before saving
+    };
+    localStorage.setItem('user', JSON.stringify(user));
+}
+
+
+function saveCredentials(username, password) {
+    const user = {
+        username: username,
+        password: password // Remember to hash passwords in a real application
+    };
+    localStorage.setItem('user', JSON.stringify(user));
+}
+
+
+
+    // Add event listeners
+    document.getElementById('create-password').addEventListener('input', updatePasswordStrength);
+    document.getElementById('create-account-btn').addEventListener('click', createAccount);
+    </script>
+
+</body>
+
+</html>

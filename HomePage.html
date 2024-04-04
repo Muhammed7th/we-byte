@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f7f7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .button {
+            width: 200px;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #efde86;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #edc40c;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="user-info">
+        
+        <h1 id="display-first-name"></h1> <!-- These elements are now added -->
+         <p id="display-last-name"></p>
+         <p id="display-country"></p>
+    </div>
+    <h2>Welcome!</h2>
+    <button class="button" onclick="window.location.href='password.html';">Password Assessment</button>
+    <button class="button" onclick="window.location.href='passwordgenerator.html';">Password Generator</button>
+    <button class="button" onclick="window.location.href='password-list.html';">Password List</button>
+
+    <!-- Add your scripts here if necessary -->
+    <script>
+        window.onload = function() {
+    // Retrieve the user profile data from localStorage and parse it
+    const userProfile = JSON.parse(localStorage.getItem('userProfile'));
+
+    // Check if the user profile data exists and then display it
+    if (userProfile) {
+        document.getElementById('display-first-name').textContent = 'Hi, ' + userProfile.firstName+ " "+ userProfile.lastName ;
+       // document.getElementById('display-last-name').textContent = 'Last Name: ' + userProfile.lastName;
+       // document.getElementById('display-country').textContent = 'Country of Origin: ' + userProfile.country;
+    } else {
+        // Handle the case where there is no profile data
+        document.getElementById('display-first-name').textContent = 'No profile data available.';
+        document.getElementById('display-last-name').textContent = '';
+        document.getElementById('display-country').textContent = '';
+    } }
+    </script>
+</body>
+</html>

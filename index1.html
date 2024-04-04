@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        body {
+            background-color: #374f6b;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            width: 300px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type=email], input[type=password], input[type=text] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button[type=submit] {
+            width: 100%;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            background-color: #ff3c06;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[type=submit]:hover {
+            background-color: #e03505;
+        }
+        .login-link {
+            display: block;
+            margin-top: 20px;
+            color: #02060a;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .login-link:hover {
+            color: #e03505;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            border: 1px solid transparent;
+            border-radius: 30px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+            margin: 10px 0;
+        }
+        .btn-google {
+            color: #4285F4;
+            border-color: #4285F4;
+            background-color: #ffffff;
+        }
+        .btn-google:hover {
+            background-color: #4285F4;
+            color: white;
+        }
+        .btn-apple {
+            color: #000000;
+            border-color: #000000;
+            background-color: #ffffff;
+        }
+        .btn-apple:hover {
+            background-color: #000000;
+            color: white;
+        }
+        .btn .fab {
+            margin-right: 10px;
+        }
+
+        /* To center the social buttons correctly */
+        .text-center {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <form action="/submit-create-account" method="POST">
+        <h2>Create Account</h2>
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" placeholder="Majed" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" placeholder="xxx@hotmail.com" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password"  id="confirm-password" name="confirm-password" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="+966" pattern="\+966\d{9}" required title="Phone number must start with +966 followed by 9 digits.">
+        </div>
+        <button type="submit">Create Account</button>
+    </form>
+    <div class="text-center">
+        <p>or sign in with</p>
+        <a href="#" class="btn btn-google">
+            <i class="fab fa-google"></i> Sign in with Google
+        </a>
+        <a href="#" class="btn btn-apple">
+            <i class="fab fa-apple"></i> Sign in with Apple
+        </a>
+    </div>
+    <a href="login.html" class="login-link">Already have an account? Login</a>
+</div>
+
+</body>
+</html>
